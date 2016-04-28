@@ -2,10 +2,18 @@
   "name": "asaokamei/payjp",
   "description": "a simple wrapper for Pay.JP payments",
   "type": "library",
+  "license": "MIT",
   "authors": [
       {
           "name": "Asao",
           "email": "kamei@workspot.jp"
       }
-  ]
+  ],
+    "require": {
+    },
+    "autoload":{
+        "psr-4": {
+            "AsaoKamei\\PayJp\\": "src/"
+        }
+    }
 }
