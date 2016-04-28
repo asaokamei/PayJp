@@ -26,16 +26,6 @@ class UpdatePay extends AbstractPayJp
     }
 
     /**
-     * @param string $api_key
-     * @param string $pay_id
-     * @return CreatePay
-     */
-    public static function forge($api_key, $pay_id)
-    {
-        return new self(new PayJpApi($api_key), null, $pay_id);
-    }
-
-    /**
      * 支払いIDに関する情報を取得。
      *
      * @return bool

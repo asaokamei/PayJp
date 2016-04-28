@@ -31,16 +31,6 @@ class CreatePay extends AbstractPayJp
     }
 
     /**
-     * @param string $api_key
-     * @param string $token_id
-     * @return CreatePay
-     */
-    public static function forge($api_key, $token_id)
-    {
-        return new self(new PayJpApi($api_key), $token_id);
-    }
-
-    /**
      * 与信（オーソリ）を行う場合の認証の期間を日数で指定する。
      * 有効な日数は１日〜６０日まで。
      *
