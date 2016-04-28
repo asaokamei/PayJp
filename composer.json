@@ -1,0 +1,11 @@
+{
+  "name": "asaokamei/payjp",
+  "description": "a simple wrapper for Pay.JP payments",
+  "type": "library",
+  "authors": [
+      {
+          "name": "Asao",
+          "email": "kamei@workspot.jp"
+      }
+  ],
+}
