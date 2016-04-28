@@ -16,12 +16,28 @@ class CreatePay extends AbstractPayJp
     public $charge;
 
     /**
+     * @var string
+     */
+    private $token_id;
+
+    /**
+     * @param PayJpApi $api
+     * @param string   $token_id
+     */
+    public function __construct($api, $token_id)
+    {
+        parent::__construct($api);
+        $this->token_id = $token_id;
+    }
+
+    /**
      * @param string $api_key
+     * @param string $token_id
      * @return CreatePay
      */
-    public static function forge($api_key)
+    public static function forge($api_key, $token_id)
     {
-        return new self(new PayJpApi($api_key));
+        return new self(new PayJpApi($api_key), $token_id);
     }
 
     /**
@@ -48,43 +64,42 @@ class CreatePay extends AbstractPayJp
      * カードトークンから指定した金額を引き落とす。
      * 成功したら支払いIDを返す。
      *
-     * @param string $card_token
-     * @param int    $amount
+     * @param int $amount
      * @return bool|string
      */
-    public function charge($card_token, $amount)
+    public function charge($amount)
     {
-        return $this->createPayment($card_token, $amount, true);
+        return $this->createPayment($amount, true);
     }
 
     /**
      * カードトークンから指定した金額を与信（オーソリ）する。
      * 成功したら支払いIDを返す。
      *
-     * @param string $card_token
-     * @param int    $amount
+     * @param int $amount
      * @return bool|string
      */
-    public function authorize($card_token, $amount)
+    public function authorize($amount)
     {
-        return $this->createPayment($card_token, $amount, false, $this->expiry_days);
+        return $this->createPayment($amount, false, $this->expiry_days);
     }
 
     /**
-     * @param string   $card_token
      * @param int      $amount
      * @param bool     $captured
      * @param int|null $expire
      * @return bool|string
      */
-    private function createPayment($card_token, $amount, $captured, $expire = null)
+    private function createPayment($amount, $captured, $expire = null)
     {
         $parameter = [
-            "card"     => $card_token,
+            "card"     => $this->token_id,
             "amount"   => $amount,
             "currency" => $this->payJp->getCurrency(),
-            "captured" => $captured,
         ];
+        if (!$captured) {
+            $parameter['capture'] = 'false';
+        }
         if (isset($expire)) {
             $parameter['expiry_days'] = $expire;
         }

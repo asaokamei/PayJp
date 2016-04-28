@@ -3,6 +3,8 @@ namespace AsaoKamei\PayJp;
 
 use ArrayAccess;
 use Payjp\Charge;
+use Payjp\Error\Authentication;
+use Payjp\Error\InvalidRequest;
 use Payjp\Payjp;
 
 class PayJpApi
@@ -28,7 +30,23 @@ class PayJpApi
      */
     public function createCharge(array $parameter)
     {
-        return Charge::create($parameter);
+        try {
+            return Charge::create($parameter);
+
+        } catch(Authentication $e) {
+            return $this->returnError($e);
+        } catch(InvalidRequest $e) {
+            return $this->returnError($e);
+        }
+    }
+
+    private function returnError(\Exception $e)
+    {
+        return ['error' => [
+            'message' => $e->getMessage(),
+            'code' => $e->getCode(),
+            'type' => 'auth_error',
+        ]];
     }
 
     /**

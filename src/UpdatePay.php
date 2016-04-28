@@ -16,13 +16,13 @@ class UpdatePay extends AbstractPayJp
     private $pay_id;
 
     /**
-     * @param PayJpApi    $api
-     * @param string      $pay_id
+     * @param PayJpApi $api
+     * @param string   $token_id
      */
-    public function __construct($api, $pay_id)
+    public function __construct($api, $token_id)
     {
         parent::__construct($api);
-        $this->pay_id = $pay_id;
+        $this->pay_id = $token_id;
     }
 
     /**
