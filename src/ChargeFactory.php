@@ -39,7 +39,7 @@ class ChargeFactory
      * @param $charge_id
      * @return CreatePay
      */
-    public function update($charge_id)
+    public function retrieve($charge_id)
     {
         return new UpdatePay($this->api_key, $charge_id);
     }

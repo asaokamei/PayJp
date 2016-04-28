@@ -63,7 +63,7 @@ and save the `$charge_id` for later use.
 never tested!
 
 ```php
-$charge = $factory->update($charge_id);
+$charge = $factory->retrieve($charge_id);
 ```
 
 then, do one of the following. 
