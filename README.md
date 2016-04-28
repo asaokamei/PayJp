@@ -22,7 +22,7 @@ composer require "asaokamei/payjp"
 Getting Started
 -----
 
-Get a public and secret api keys from Pay.JP
+Get public and secret api keys from Pay.JP
 
 ```php
 define('PAY_JP_SECRET_KEY', 'sk_test_*****'); // your secret key.
@@ -35,21 +35,19 @@ get a credit token using [checkout](https://pay.jp/docs/cardtoken).
 The token is passed to a PHP script as `$_POST['payjp-token']`. 
 
 ```php
-if (isset($_POST) && isset($_POST['payjp-token'])) {
-    $charge = CreatePay::forge(PAY_JP_SECRET_KEY, $_POST['payjp-token']);
-    if (!$charge_id = $charge->charge(1000)) {
-        var_dump($charge->getError());
-    }
+$charge = CreatePay::forge(PAY_JP_SECRET_KEY, $_POST['payjp-token']);
+if (!$charge_id = $charge->charge(1000)) {
+    var_dump($charge->getError());
 }
 ```
 
-You can authorize the credit, instead of charging by,
+You can authorize the credit, by,
 
 ```php
 $charge_id = $charge->authorize(1000);
 ```
 
-and save the `$pay_id` for later use. 
+and save the `$charge_id` for later use. 
 
 
 ### capture, cancel, or refund
