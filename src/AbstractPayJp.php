@@ -19,13 +19,19 @@ abstract class AbstractPayJp
     private $error = [];
 
     /**
+     * @var ErrorMessages
+     */
+    private $errorMessages;
+
+    /**
      * AbstractPayJp constructor.
      *
-     * @param PayJpApi    $api
+     * @param PayJpApi $api
      */
     public function __construct($api)
     {
-        $this->payJp = $api;
+        $this->errorMessages = new ErrorMessages();
+        $this->payJp         = $api;
     }
 
     /**
@@ -42,6 +48,36 @@ abstract class AbstractPayJp
     public function getError()
     {
         return $this->error;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getMessage()
+    {
+        if (!isset($this->error)) {
+            return '';
+        }
+        if ($this->errorMessages->has($this->g('code'))) {
+            return $this->errorMessages->get($this->g('code'));
+        }
+        if ($this->g('code') === 0 &&
+            preg_match('/^token `[_0-9a-zA-Z]+` has already been used\.$/i', $this->g('message'))) {
+            return "すでにカード情報は使われています";
+        }
+        if ($this->g('message')) {
+            return $this->g('message');
+        }
+        return '支払い処理中にエラーが起こりました';
+    }
+
+    /**
+     * @param $code
+     * @return null
+     */
+    private function g($code)
+    {
+        return array_key_exists($code, $this->error) ? $this->error[$code] : null;
     }
 
     /**
