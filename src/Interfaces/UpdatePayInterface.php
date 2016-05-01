@@ -52,7 +52,7 @@ interface UpdatePayInterface
     /**
      * @return DateTime
      */
-    public function getCapturedAt();
+    public function getCreatedAt();
 
     /**
      * @return bool

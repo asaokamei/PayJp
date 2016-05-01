@@ -21,6 +21,12 @@ if (isset($_POST) && $amount = getAmountInPost()) {
     
 <?php elseif ($service->service === PayService::WEB_PAY): ?>
 
+    <form action="" method="post">
+        <input type="text" name="amount" value="2345" />
+        <input type="checkbox" name="authorize" value="auth" />
+        <script src="https://checkout.webpay.jp/v3/" class="webpay-button" data-key="<?= $service->pub; ?>" data-lang="ja"></script>
+    </form>
+    
 <?php endif; ?>
 
 <?php
@@ -33,6 +39,8 @@ if (isset($_POST) && $amount = getAmountInPost()) {
 function createPayment(PayService $service, $post, $amount)
 {
     if ($service->service === PayService::PAY_JP) {
+        createPayJp($service, $post, $amount);
+    } elseif ($service->service === PayService::WEB_PAY) {
         createPayJp($service, $post, $amount);
     }
 }

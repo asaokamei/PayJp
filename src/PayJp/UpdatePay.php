@@ -150,9 +150,9 @@ class UpdatePay extends AbstractPayJp implements UpdatePayInterface
     /**
      * @return DateTime
      */
-    public function getCapturedAt()
+    public function getCreatedAt()
     {
-        return new DateTime(date('Y-m-d H:i:s', $this->charge['captured_at']));
+        return new DateTime(date('Y-m-d H:i:s', $this->charge['created']));
     }
     
     /**

@@ -4,6 +4,7 @@ namespace AsaoKamei\PayJp\WebPay;
 use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
 use DateTime;
 use WebPay\Charge;
+use WebPay\Data\ChargeResponse;
 use WebPay\WebPay;
 
 class UpdateCharge implements UpdatePayInterface
@@ -23,6 +24,13 @@ class UpdateCharge implements UpdatePayInterface
      */
     private $charge;
 
+    /**
+     * UpdateCharge constructor.
+     *
+     * @param WebPay              $web_pay
+     * @param null|string         $charge_id
+     * @param null|ChargeResponse $charge
+     */
     public function __construct($web_pay, $charge_id = null, $charge = null)
     {
         $this->web_pay = $web_pay;
@@ -31,7 +39,7 @@ class UpdateCharge implements UpdatePayInterface
             $this->retrieve($charge_id);
         } elseif (!is_null($charge)) {
             $this->charge = $charge;
-            $this->charge_id = $charge['id'];
+            $this->charge_id = $charge->id;
         } else {
             throw new \InvalidArgumentException;
         }
@@ -90,7 +98,7 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function getId()
     {
-        // TODO: Implement getId() method.
+        return $this->charge->id;
     }
 
     /**
@@ -98,7 +106,7 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function getAmount()
     {
-        // TODO: Implement getAmount() method.
+        return $this->charge->amount;
     }
 
     /**
@@ -106,15 +114,15 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function getAmountRefund()
     {
-        // TODO: Implement getAmountRefund() method.
+        return $this->charge->amount_refunded;
     }
 
     /**
      * @return DateTime
      */
-    public function getCapturedAt()
+    public function getCreatedAt()
     {
-        // TODO: Implement getCapturedAt() method.
+        return new DateTime(date('Y-m-d H:i:s', $this->charge->created));
     }
 
     /**
@@ -122,7 +130,7 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function isCaptured()
     {
-        // TODO: Implement isCaptured() method.
+        return $this->charge->captured;
     }
 
     /**
@@ -130,6 +138,6 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function isRefund()
     {
-        // TODO: Implement isRefund() method.
+        return $this->charge->refunded;
     }
 }

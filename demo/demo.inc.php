@@ -103,6 +103,9 @@ class PayService
         if ($this->service === self::PAY_JP) {
             return array_key_exists('payjp-token', $post) ? $post['payjp-token'] : null;
         }
+        if ($this->service === self::WEB_PAY) {
+            return array_key_exists('webpay-token', $post) ? $post['webpay-token'] : null;
+        }
         throw new InvalidArgumentException;
     }
 }

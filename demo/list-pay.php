@@ -25,7 +25,7 @@ function chargeInfo(UpdatePayInterface $charge)
     ";
     
     if ($charge->isCaptured()) {
-        $html .= "<li>captured at: {$charge->getCapturedAt()->format('Y/m/d H:i')}</li>";
+        $html .= "<li>created at: {$charge->getCreatedAt()->format('Y/m/d H:i')}</li>";
     } else {
         $html .= "<li>capture: <form method='post' action='capture.php' style='display: inline;'>
             <input type='hidden' name='id' value='{$charge->getId()}'/>

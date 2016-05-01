@@ -3,7 +3,8 @@ namespace AsaoKamei\PayJp\WebPay;
 
 use AsaoKamei\PayJp\Interfaces\ChargeFactoryInterface;
 use AsaoKamei\PayJp\Interfaces\CreatePayInterface;
-use AsaoKamei\PayJp\PayJp\UpdatePay;
+use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
+use WebPay\Charge;
 use WebPay\WebPay;
 
 class ChargeFactory implements ChargeFactoryInterface
@@ -37,7 +38,15 @@ class ChargeFactory implements ChargeFactoryInterface
      */
     public static function forge($api_key, $currency = 'jpy')
     {
-        new self(new WebPay($api_key), $currency);
+        return new self(new WebPay($api_key), $currency);
+    }
+
+    /**
+     * @return Charge
+     */
+    private function getCharge()
+    {
+        return $this->web_pay->charge;
     }
 
     /**
@@ -51,20 +60,30 @@ class ChargeFactory implements ChargeFactoryInterface
 
     /**
      * @param $charge_id
-     * @return UpdatePay
+     * @return UpdatePayInterface
      */
     public function retrieve($charge_id)
     {
-        $this->web_pay->charge->retrieve($charge_id);
+        $this->getCharge()->retrieve($charge_id);
     }
 
     /**
      * @param int $limit
      * @param int $offset
-     * @return UpdatePay[]
+     * @return UpdatePayInterface[]
      */
     public function getList($limit = 10, $offset = 0)
     {
-        // TODO: Implement getList() method.
+        $list = $this->getCharge()->all([
+            'limit'  => $limit,
+            'offset' => $offset,
+        ]);
+        $found = [];
+        $count = $list->count;
+        $data  = $list->data;
+        for($i = 0; $i < $count; $i++) {
+            $found[] = new UpdateCharge($this->web_pay, null, $data[$i]);
+        }
+        return $found;
     }
 }
