@@ -118,7 +118,7 @@ class UpdatePay extends AbstractPayJp implements UpdatePayInterface
             return null;
         }
         return [
-            'amount_refunded'   => $amount,
+            'amount'   => $amount,
             'currency' => $this->payJp->getCurrency(),
         ];
     }
