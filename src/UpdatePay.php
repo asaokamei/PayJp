@@ -1,6 +1,8 @@
 <?php
 namespace AsaoKamei\PayJp;
 
+use DateTime;
+use InvalidArgumentException;
 use Payjp\Charge;
 
 class UpdatePay extends AbstractPayJp
@@ -13,16 +15,25 @@ class UpdatePay extends AbstractPayJp
     /**
      * @var string
      */
-    private $pay_id;
+    private $charge_id;
 
     /**
      * @param PayJpApi $api
-     * @param string   $token_id
+     * @param string   $charge_id
+     * @param Charge   $charge
      */
-    public function __construct($api, $token_id)
+    public function __construct($api, $charge_id = null, $charge = null)
     {
         parent::__construct($api);
-        $this->pay_id = $token_id;
+        if (!is_null($charge_id)) {
+            $this->charge_id = $charge_id;
+            $this->retrieve();
+        } elseif (!empty($charge)) {
+            $this->charge    = $charge;
+            $this->charge_id = $charge['id'];
+        } else {
+            throw new InvalidArgumentException;
+        }
     }
 
     /**
@@ -32,7 +43,7 @@ class UpdatePay extends AbstractPayJp
      */
     private function retrieve()
     {
-        $charge = $this->payJp->retrieveCharge($this->pay_id);
+        $charge = $this->payJp->retrieveCharge($this->charge_id);
         if (isset($return['error'])) {
             return $this->setError($return['error']);
         }
@@ -47,11 +58,11 @@ class UpdatePay extends AbstractPayJp
      */
     public function capture($amount = null)
     {
-        if (!$this->retrieve()) {
+        if (!$this->isOK()) {
             return;
         }
         if ($this->charge['captured']) {
-            throw new \InvalidArgumentException('cannot capture the already captured charge.');
+            throw new InvalidArgumentException('cannot capture the already captured charge.');
         }
         $parameter = $this->getRetrieveParameter($amount);
         $this->charge->capture($parameter);
@@ -59,37 +70,38 @@ class UpdatePay extends AbstractPayJp
 
     /**
      * 支払いIDにたいして、キャンセル（全額返金）する。
+     * 
+     * 部分返金を行った場合は、キャンセルのみ可能。
      */
     public function cancel()
     {
-        if (!$this->retrieve()) {
+        if (!$this->isOK()) {
             return;
-        }
-        if ($this->charge['amount_refunded']) {
-            throw new \InvalidArgumentException('cannot cancel the refunded charge.');
         }
         $this->charge->refund();
     }
 
     /**
      * 支払いIDにたいして、返金する。
+     * 
+     * 部分返金を行った場合は、再度の返金は不可。ただしキャンセルは可能。
      *
      * @param int $amount
      */
     public function refund($amount)
     {
         $amount = (int) $amount;
-        if ($amount < 0) {
-            throw new \InvalidArgumentException('cannot refund negative amount.');
-        }
-        if (!$this->retrieve()) {
+        if (!$this->isOK()) {
             return;
         }
+        if ($amount < 0) {
+            throw new InvalidArgumentException('cannot refund negative amount.');
+        }
         if ($this->charge['amount_refunded']) {
-            throw new \InvalidArgumentException('cannot refund the refunded charge.');
+            throw new InvalidArgumentException('cannot refund the refunded charge.');
         }
         if ($this->charge['amount'] < $amount) {
-            throw new \InvalidArgumentException('cannot refund more than the charged amount.');
+            throw new InvalidArgumentException('cannot refund more than the charged amount.');
         }
         $parameter = $this->getRetrieveParameter($amount);
         $this->charge->refund($parameter);
@@ -105,8 +117,56 @@ class UpdatePay extends AbstractPayJp
             return null;
         }
         return [
-            'amount'   => $amount,
+            'amount_refunded'   => $amount,
             'currency' => $this->payJp->getCurrency(),
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->charge_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount()
+    {
+        return (int) $this->charge['amount'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmountRefund()
+    {
+        return (int) $this->charge['amount_refunded'];
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getCapturedAt()
+    {
+        return new DateTime(date('Y-m-d H:i:s', $this->charge['captured_at']));
+    }
+    
+    /**
+     * @return bool
+     */
+    public function isCaptured()
+    {
+        return $this->charge['captured'];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRefund()
+    {
+        return $this->charge['refunded'];
     }
 }

@@ -3,6 +3,7 @@ namespace AsaoKamei\PayJp;
 
 use ArrayAccess;
 use Payjp\Charge;
+use Payjp\Collection;
 use Payjp\Error\Authentication;
 use Payjp\Error\InvalidRequest;
 use Payjp\Payjp;
@@ -64,5 +65,15 @@ class PayJpApi
     public function getCurrency()
     {
         return $this->currency;
+    }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return array|Collection
+     */
+    public function getChargeList($limit = 10, $offset = 0)
+    {
+        return Charge::all(array("limit" => $limit, "offset" => $offset));
     }
 }

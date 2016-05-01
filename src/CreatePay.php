@@ -22,12 +22,12 @@ class CreatePay extends AbstractPayJp
 
     /**
      * @param PayJpApi $api
-     * @param string   $token_id
+     * @param string   $charge_id
      */
-    public function __construct($api, $token_id)
+    public function __construct($api, $charge_id)
     {
         parent::__construct($api);
-        $this->token_id = $token_id;
+        $this->token_id = $charge_id;
     }
 
     /**
