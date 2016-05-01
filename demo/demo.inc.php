@@ -1,5 +1,5 @@
 <?php
-use AsaoKamei\PayJp\ChargeFactory;
+use AsaoKamei\PayJp\PayJp\ChargeFactory;
 
 require_once dirname(__DIR__) . '/vendor/autoload.php';
 date_default_timezone_set('Asia/Tokyo');

@@ -1,6 +1,6 @@
 <?php
 
-use AsaoKamei\PayJp\UpdatePay;
+use AsaoKamei\PayJp\PayJp\UpdatePay;
 
 require_once __DIR__ . '/demo.inc.php';
 

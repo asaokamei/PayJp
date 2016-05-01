@@ -1,5 +1,5 @@
 <?php
-namespace AsaoKamei\PayJp;
+namespace AsaoKamei\PayJp\PayJp;
 
 abstract class AbstractPayJp
 {
