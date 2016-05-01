@@ -64,7 +64,7 @@ class ChargeFactory implements ChargeFactoryInterface
      */
     public function retrieve($charge_id)
     {
-        $this->getCharge()->retrieve($charge_id);
+        return new UpdateCharge($this->web_pay, $charge_id);
     }
 
     /**

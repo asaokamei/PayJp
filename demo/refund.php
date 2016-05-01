@@ -8,7 +8,7 @@ $factory = $service->getFactory();
 $isOK    = true;
 $message = '';
 if ($id = getIdInPost()) {
-    $charge  = $factory->retrieve($_POST['id']);
+    $charge  = $factory->retrieve($id);
     if ($refund = getAmountInPost('refund')) {
         $charge->refund($refund);
         $message = 'refunded';

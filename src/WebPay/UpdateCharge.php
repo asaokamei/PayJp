@@ -38,7 +38,7 @@ class UpdateCharge implements UpdatePayInterface
             $this->charge_id = $charge_id;
             $this->retrieve($charge_id);
         } elseif (!is_null($charge)) {
-            $this->charge = $charge;
+            $this->charge    = $charge;
             $this->charge_id = $charge->id;
         } else {
             throw new \InvalidArgumentException;
@@ -46,13 +46,19 @@ class UpdateCharge implements UpdatePayInterface
     }
 
     /**
+     * @return Charge
+     */
+    private function getCharge()
+    {
+        return $this->web_pay->charge;
+    }
+
+    /**
      * @param $charge_id
      */
     private function retrieve($charge_id)
     {
-        /** @var Charge $charge */
-        $charge = $this->web_pay->charge;
-        $this->charge = $charge->retrieve(['id' =>$charge_id]);
+        $this->charge = $this->getCharge()->retrieve(['id' => $charge_id]);
     }
 
     /**
@@ -63,12 +69,12 @@ class UpdateCharge implements UpdatePayInterface
     public function capture($amount = null)
     {
         $parameter = [
-            'id' =>$this->charge_id
+            'id' => $this->charge_id
         ];
         if (!is_null($amount) && is_numeric($amount)) {
             $parameter['amount'] = $amount;
         }
-        $this->charge->capture($parameter);
+        $this->getCharge()->capture($parameter);
     }
 
     /**
@@ -78,7 +84,9 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function cancel()
     {
-        // TODO: Implement cancel() method.
+        $this->getCharge()->refund([
+            'id' => $this->charge_id,
+        ]);
     }
 
     /**
@@ -90,7 +98,10 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function refund($amount)
     {
-        // TODO: Implement refund() method.
+        $this->getCharge()->refund([
+            'id'     => $this->charge_id,
+            'amount' => $amount,
+        ]);
     }
 
     /**
@@ -138,6 +149,9 @@ class UpdateCharge implements UpdatePayInterface
      */
     public function isRefund()
     {
-        return $this->charge->refunded;
+        if ($this->charge->amount_refunded > 0 ) {
+            return true;
+        }
+        return false;
     }
 }

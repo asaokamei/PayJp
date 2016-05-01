@@ -8,8 +8,11 @@ $factory = $service->getFactory();
 $isOK    = true;
 $message = '';
 if ($id = getIdInPost()) {
-    $charge  = $factory->retrieve($_POST['id']);
-    if ($charge->isCaptured()) {
+    $charge  = $factory->retrieve($id);
+    if (is_null($charge)) {
+        $isOK    = false;
+        $message = 'cannot retrieve charge';
+    } elseif ($charge->isCaptured()) {
         $isOK    = false;
         $message = 'already captured';
     } else {
