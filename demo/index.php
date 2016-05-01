@@ -5,7 +5,8 @@ require_once __DIR__ . '/demo.inc.php';
 $service = new PayService();
 if ($service_name = getIdInPost('service')) {
     $key = getIdInPost('key');
-    $service->setupService($service_name, $key);
+    $pub = getIdInPost('pub');
+    $service->setupService($service_name, $key, $pub);
 }
 
 ?>
@@ -37,7 +38,8 @@ if ($service_name = getIdInPost('service')) {
         </dd>
         
         <dt>API-KEY</dt>
-        <dd><input type="text" name="key" /></dd>
+        <dd>Secret Key: <input type="text" name="key" /><br/>
+            Public Key: <input type="text" name="pub" /></dd>
 
         <dt>&nbsp;</dt>
         <dd><input type="submit" value="set service and public api-key " /></dd>

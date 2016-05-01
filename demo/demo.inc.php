@@ -12,12 +12,14 @@ class PayService
 {
     const SERVICE_ID = 'demo-service';
     const API_KEY_ID = 'demo-api-key';
+    const PUB_KEY_ID = 'demo-pub-key';
     
     const PAY_JP = 'payjp';
     const WEB_PAY = 'webpay';
     
     public $service;
     public $key;
+    public $pub;
     
     private $isLoaded = false;
 
@@ -32,11 +34,13 @@ class PayService
     /**
      * @param string $service
      * @param string $key
+     * @param string $pub
      */
-    public function setupService($service, $key)
+    public function setupService($service, $key, $pub)
     {
         $_SESSION[self::SERVICE_ID] = $service;
         $_SESSION[self::API_KEY_ID] = $key;
+        $_SESSION[self::PUB_KEY_ID] = $pub;
         $this->loadService();
     }
 
@@ -48,6 +52,7 @@ class PayService
         if (isset($_SESSION[self::SERVICE_ID])) {
             $this->service = $_SESSION[self::SERVICE_ID];
             $this->key     = $_SESSION[self::API_KEY_ID];
+            $this->pub     = $_SESSION[self::PUB_KEY_ID];
             $this->isLoaded = true;
             return;
         }
@@ -85,6 +90,7 @@ class PayService
          <ul>
             <li>service: {$this->service}</li>
             <li>api-key: {$this->key}</li>
+            <li>pub-key: {$this->pub}</li>
         </ul>";
     }
 

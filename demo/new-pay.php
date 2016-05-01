@@ -16,7 +16,7 @@ if (isset($_POST) && $amount = getAmountInPost()) {
     <form action="" method="post">
         <input type="text" name="amount" value="2345" />
         <input type="checkbox" name="authorize" value="auth" />
-        <script src="https://checkout.pay.jp/" class="payjp-button" data-key=""></script>
+        <script src="https://checkout.pay.jp/" class="payjp-button" data-key="<?= $service->pub; ?>"></script>
     </form>
     
 <?php elseif ($service->service === PayService::WEB_PAY): ?>
