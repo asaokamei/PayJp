@@ -11,6 +11,9 @@
   ],
     "require": {
     },
+    "require-dev": {
+      "payjp/payjp-php": "0.0.x"
+    },
     "autoload":{
         "psr-4": {
             "AsaoKamei\\PayJp\\": "src/"
