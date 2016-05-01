@@ -73,8 +73,6 @@ and save the `$charge_id` for later use.
 
 ### capture, cancel, or refund
 
-never tested!
-
 ```php
 $charge = $factory->retrieve($charge_id);
 ```
