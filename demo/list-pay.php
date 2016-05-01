@@ -1,14 +1,15 @@
 <?php
 
-use AsaoKamei\PayJp\PayJp\UpdatePay;
+use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
 
 require_once __DIR__ . '/demo.inc.php';
 
-$factory = getFactory();
+$service = new PayService();
+$factory = $service->getFactory();
 $list = $factory->getList();
 
 ?>
-<h1>List</h1>
+<h1><a href="index.php" >top</a> &gt; Payment List</h1>
 <?php 
 foreach($list as $charge) {
     echo '<ul>';
@@ -16,7 +17,7 @@ foreach($list as $charge) {
     echo '</ul>';
 }
 
-function chargeInfo(UpdatePay $charge)
+function chargeInfo(UpdatePayInterface $charge)
 {
     $html = "
     <li>{$charge->getId()}</li>

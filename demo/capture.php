@@ -2,10 +2,12 @@
 
 require_once __DIR__ . '/demo.inc.php';
 
+$service = new PayService();
+$factory = $service->getFactory();
+
 $isOK    = true;
 $message = '';
 if ($id = getIdInPost()) {
-    $factory = getFactory();
     $charge  = $factory->retrieve($_POST['id']);
     if ($charge->isCaptured()) {
         $isOK    = false;
@@ -19,7 +21,7 @@ if ($id = getIdInPost()) {
     $message = 'not id or refund amount found.';
 }
 ?>
-<h1>Capture</h1>
+<h1><a href="index.php" >top</a> &gt; Capture</h1>
 <?php
 echo showMessage($message, $isOK);
 ?>
