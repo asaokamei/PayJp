@@ -1,11 +1,12 @@
 <?php
 namespace AsaoKamei\PayJp\PayJp;
 
+use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
 use DateTime;
 use InvalidArgumentException;
 use Payjp\Charge;
 
-class UpdatePay extends AbstractPayJp
+class UpdatePay extends AbstractPayJp implements UpdatePayInterface
 {
     /**
      * @var Charge
