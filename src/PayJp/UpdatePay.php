@@ -1,11 +1,12 @@
 <?php
-namespace AsaoKamei\PayJp;
+namespace AsaoKamei\PayJp\PayJp;
 
+use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
 use DateTime;
 use InvalidArgumentException;
 use Payjp\Charge;
 
-class UpdatePay extends AbstractPayJp
+class UpdatePay extends AbstractPayJp implements UpdatePayInterface
 {
     /**
      * @var Charge
@@ -117,7 +118,7 @@ class UpdatePay extends AbstractPayJp
             return null;
         }
         return [
-            'amount_refunded'   => $amount,
+            'amount'   => $amount,
             'currency' => $this->payJp->getCurrency(),
         ];
     }
@@ -149,9 +150,9 @@ class UpdatePay extends AbstractPayJp
     /**
      * @return DateTime
      */
-    public function getCapturedAt()
+    public function getCreatedAt()
     {
-        return new DateTime(date('Y-m-d H:i:s', $this->charge['captured_at']));
+        return new DateTime(date('Y-m-d H:i:s', $this->charge['created']));
     }
     
     /**

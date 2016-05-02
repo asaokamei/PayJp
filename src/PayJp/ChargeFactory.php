@@ -1,10 +1,9 @@
 <?php
-namespace AsaoKamei\PayJp;
+namespace AsaoKamei\PayJp\PayJp;
 
-use Payjp\Charge;
-use Payjp\Collection;
+use AsaoKamei\PayJp\Interfaces\ChargeFactoryInterface;
 
-class ChargeFactory
+class ChargeFactory implements ChargeFactoryInterface
 {
     /**
      * @var PayJpApi
@@ -30,12 +29,12 @@ class ChargeFactory
     }
 
     /**
-     * @param string $token_id
+     * @param string $card_id
      * @return CreatePay
      */
-    public function create($token_id)
+    public function create($card_id)
     {
-        return new CreatePay($this->api_key, $token_id);
+        return new CreatePay($this->api_key, $card_id);
     }
 
     /**

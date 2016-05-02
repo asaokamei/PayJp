@@ -1,5 +1,5 @@
 <?php
-namespace AsaoKamei\PayJp;
+namespace AsaoKamei\PayJp\PayJp;
 
 use ArrayAccess;
 use Payjp\Charge;

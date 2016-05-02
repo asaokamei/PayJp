@@ -2,11 +2,13 @@
 
 require_once __DIR__ . '/demo.inc.php';
 
+$service = new PayService();
+$factory = $service->getFactory();
+
 $isOK    = true;
 $message = '';
 if ($id = getIdInPost()) {
-    $factory = getFactory();
-    $charge  = $factory->retrieve($_POST['id']);
+    $charge  = $factory->retrieve($id);
     if ($refund = getAmountInPost('refund')) {
         $charge->refund($refund);
         $message = 'refunded';
@@ -19,7 +21,7 @@ if ($id = getIdInPost()) {
     $message = 'not id or refund amount found.';
 }
 ?>
-<h1>Refund</h1>
+<h1><a href="index.php" >top</a> &gt; Refund</h1>
 <?php
 echo showMessage($message, $isOK);
 ?>

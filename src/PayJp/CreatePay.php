@@ -1,9 +1,10 @@
 <?php
-namespace AsaoKamei\PayJp;
+namespace AsaoKamei\PayJp\PayJp;
 
+use AsaoKamei\PayJp\Interfaces\CreatePayInterface;
 use Payjp\Charge;
 
-class CreatePay extends AbstractPayJp
+class CreatePay extends AbstractPayJp implements CreatePayInterface
 {
     /**
      * @var int

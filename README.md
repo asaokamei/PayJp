@@ -1,9 +1,9 @@
 PayJp
 =====
 
-a simple wrapper classes for [Pay.JP](https://pay.jp/) payment service. 
+a simple wrapper classes for [Pay.JP](https://pay.jp/) and [WebPay](https://webpay.jp) payment services. 
 
-!!!NOT REALLY TESTED!!!
+!!!NOT REALLY TESTED nor USED!!!
 
 ### License
 
@@ -19,31 +19,44 @@ PSR-1, PSR-2, and PSR-4.
 composer require "asaokamei/payjp"
 ```
 
+to see a demo, try
+
+```sh
+cd payjp
+composer install
+cd demo
+php -S localhost:8888
+```
+
+and browse `http://localhost:8888/`. 
+
 Getting Started
 -----
 
-Get public and secret api keys from Pay.JP
+Get public and secret api keys from Pay.jp or WebPay.jp.
 
 ```php
 define('PAY_JP_SECRET_KEY', 'sk_test_*****'); // your secret key.
-define('PAY_JP_PUBLIC_KEY', 'pk_test_*****'); // your public key.
 ```
 
 Then, create a factory for charges, as 
 
 ```php
-use AsaoKamei\PayJp\ChargeFactory;
+// for Pay.jp
+$factory = AsaoKamei\PayJp\PayJp\ChargeFactory::forge(PAY_JP_SECRET_KEY); 
 
-$factory = ChargeFactory::forge(PAY_JP_SECRET_KEY);
+// for WebPay.jp
+$factory = AsaoKamei\PayJp\WebPay\ChargeFactory::forge(PAY_JP_SECRET_KEY); 
 ```
 
 ### charge to a credit card
 
-get a credit token using [checkout](https://pay.jp/docs/cardtoken). 
-The token is passed to a PHP script as `$_POST['payjp-token']`. 
+get a credit token ([`$_POST['payjp-token']` for pay.jp](https://pay.jp/docs/cardtoken) or 
+[`$_POST['webpay-token']` for WebPay.jp](https://webpay.jp/docs/payments_with_token)). 
 
 ```php
-$charge  = $factory->create($_POST['payjp-token']);
+$charge  = $factory->create($_POST['service-token']);
+
 if (!$charge_id = $charge->charge(1000)) {
     var_dump($charge->getError());
 }
@@ -60,8 +73,6 @@ and save the `$charge_id` for later use.
 
 ### capture, cancel, or refund
 
-never tested!
-
 ```php
 $charge = $factory->retrieve($charge_id);
 ```
@@ -74,4 +85,9 @@ $charge->cancel();
 $charge->refund(500);
 ```
 
-You can only cancel or refund once once. 
+You can only refund once for pay.jp. 
+
+Notice
+------
+
+* `refund` is not working for pay.jp.

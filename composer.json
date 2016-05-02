@@ -12,7 +12,8 @@
     "require": {
     },
     "require-dev": {
-      "payjp/payjp-php": "0.0.x"
+      "payjp/payjp-php": "0.0.x",
+      "webpay/webpay": "~2.2"
     },
     "autoload":{
         "psr-4": {
