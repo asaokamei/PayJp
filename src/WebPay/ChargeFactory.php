@@ -50,7 +50,7 @@ class ChargeFactory implements ChargeFactoryInterface
     }
 
     /**
-     * @param string $card_id
+     * @param string|array $card_id
      * @return CreatePayInterface
      */
     public function create($card_id)
