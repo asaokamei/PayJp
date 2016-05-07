@@ -75,12 +75,12 @@ class ChargeFactory implements ChargeFactoryInterface
     public function getList($limit = 10, $offset = 0)
     {
         $list = $this->getCharge()->all([
-            'limit'  => $limit,
+            'count'  => $limit,
             'offset' => $offset,
         ]);
         $found = [];
-        $count = $list->count;
         $data  = $list->data;
+        $count = count($data);
         for($i = 0; $i < $count; $i++) {
             $found[] = new UpdateCharge($this->web_pay, null, $data[$i]);
         }
