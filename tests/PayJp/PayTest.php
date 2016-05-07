@@ -1,50 +1,58 @@
 <?php
 namespace tests\PayJp;
 
+use AsaoKamei\PayJp\Interfaces\ChargeFactoryInterface;
+use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
 use PHPUnit_Framework_TestCase;
-use tests\Tools\Init;
+use tests\Tools\Cards;
+use tests\Tools\Services;
 
 class PayTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * @var Init
+     * @var Services
      */
     private $init;
 
+    /**
+     * @var Cards
+     */
+    private $cards;
+
     function setup()
     {
-        $this->init = new Init();
+        $this->init  = new Services();
+        $this->cards = new Cards();
     }
 
-    function test0()
+    /**
+     * @test
+     */
+    function create_a_new_charge_and_retrieve_it_from_the_service()
     {
         $factories = $this->init->getFactories();
         foreach ($factories as $service => $f) {
-            // creating a new charge.
-            $charge    = $f->create([
-                'number'    => '4242424242424242',
-                'exp_month' => '12',
-                'exp_year'  => '2020',
-                'cvc'       => '123',
-                'name'      => 'YUI ARAGAKI',
-            ]);
-            $amount    = rand(1000, 9999);
-            $charge_id = $charge->charge($amount);
-            $this->assertTrue(strlen($charge_id)>0);
-            
-            // retrieving the created charge.
-            $list = $f->getList(1);
-            $this->assertEquals($charge_id, $list[0]->getId());
-            $this->assertEquals($amount, $list[0]->getAmount());
+            $this->createAndRetrieve($f);
         }
     }
 
-    function get_a_list_of_charges_from_test_account()
+    /**
+     * @param ChargeFactoryInterface $factory
+     * @return UpdatePayInterface
+     */
+    private function createAndRetrieve($factory)
     {
-        $factories = $this->init->getFactories();
-        foreach ($factories as $service => $f) {
-            $list = $f->getList();
-            $this->assertTrue(count($list) > 0);
-        }
+        // creating a new charge.
+        $charge    = $factory->create($this->cards->getSuccess());
+        $amount    = rand(1000, 9999);
+        $charge_id = $charge->charge($amount);
+        $this->assertTrue(strlen($charge_id) > 0);
+
+        // retrieving the created charge.
+        $list = $factory->getList(1);
+        $this->assertEquals($charge_id, $list[0]->getId());
+        $this->assertEquals($amount, $list[0]->getAmount());
+
+        return $list[0];
     }
 }

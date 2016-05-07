@@ -5,7 +5,7 @@ use AsaoKamei\PayJp\Interfaces\ChargeFactoryInterface;
 use AsaoKamei\PayJp\PayJp\ChargeFactory;
 use RuntimeException;
 
-class Init
+class Services
 {
     public static $services = [
         'PayJp',
