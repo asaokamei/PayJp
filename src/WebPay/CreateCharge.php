@@ -68,6 +68,7 @@ class CreateCharge implements CreatePayInterface
             "currency" => $this->currency,
             "card"     => $this->card_id,
         ]);
+        return $this->charge->id;
     }
 
     /**

@@ -3,7 +3,7 @@ PayJp
 
 a simple wrapper classes for [Pay.JP](https://pay.jp/) and [WebPay](https://webpay.jp) payment services. 
 
-!!!NOT REALLY TESTED nor USED!!!
+!!!NOT FULLY TESTED nor USED!!!
 
 ### License
 
@@ -85,7 +85,18 @@ $charge->cancel();
 $charge->refund(500);
 ```
 
-You can only refund once for pay.jp. 
+You can only refund once for `pay.jp`. 
+
+
+Testing
+-------
+
+To run the test, please obtain api keys for test from `Pay.jp` and `WebPay`. 
+
+Set the secret and public api keys to `tests/services.ini` accordingly. 
+
+Then, run phpunit using `tests/phpunit.xml` configuration. 
+
 
 Notice
 ------

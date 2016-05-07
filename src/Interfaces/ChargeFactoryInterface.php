@@ -10,7 +10,7 @@ namespace AsaoKamei\PayJp\Interfaces;
 interface ChargeFactoryInterface
 {
     /**
-     * @param string $card_id
+     * @param string|array $card_id
      * @return CreatePayInterface
      */
     public function create($card_id);
