@@ -90,6 +90,8 @@ class CreateCharge implements CreatePayInterface
             $parameter['expire_days'] = $this->expire_days;
         }
         $this->charge = $this->getChargeObj()->create($parameter);
+        
+        return $this->charge->id;
     }
 
     /**

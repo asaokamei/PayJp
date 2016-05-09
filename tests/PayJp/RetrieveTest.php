@@ -2,7 +2,6 @@
 namespace tests\PayJp;
 
 use AsaoKamei\PayJp\Interfaces\ChargeFactoryInterface;
-use AsaoKamei\PayJp\Interfaces\UpdatePayInterface;
 use PHPUnit_Framework_TestCase;
 use tests\Tools\Cards;
 use tests\Tools\Services;
