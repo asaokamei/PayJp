@@ -5,7 +5,7 @@ use AsaoKamei\PayJp\Interfaces\ChargeFactoryInterface;
 use PHPUnit_Framework_TestCase;
 use tests\Tools\Services;
 
-class RetrieveTest extends PHPUnit_Framework_TestCase
+class GetListTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Services

@@ -7,7 +7,7 @@ use PHPUnit_Framework_TestCase;
 use tests\Tools\Cards;
 use tests\Tools\Services;
 
-class PayTest extends PHPUnit_Framework_TestCase
+class CreateTest extends PHPUnit_Framework_TestCase
 {
     /**
      * @var Services
@@ -21,7 +21,6 @@ class PayTest extends PHPUnit_Framework_TestCase
 
     function setup()
     {
-        $this->markTestSkipped('skipped for writing retrieve tests.'); // todo delete this line when RetrieveTest is ready. 
         $this->init  = new Services();
         $this->cards = new Cards();
     }
