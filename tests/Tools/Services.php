@@ -7,11 +7,6 @@ use RuntimeException;
 
 class Services
 {
-    public static $services = [
-        'PayJp',
-        'WebPay',
-    ];
-
     private $init;
 
     private $service;
@@ -75,7 +70,7 @@ class Services
     public function getFactories()
     {
         $factories = [];
-        foreach(self::$services as $service) {
+        foreach($this->init as $service => $info) {
             $this->setService($service);
             /** @var ChargeFactory $class */
             $class = $this->getFactoryClass();
